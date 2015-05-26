@@ -1,4 +1,4 @@
-﻿Build started 20/05/2015 17:00:59.
+﻿Build started 25/05/2015 16:33:53.
      1>Project "C:\Users\stefen2\Desktop\Box2D_v2.3.0\Box2D\Build\vs2012\GLUI.vcxproj" on node 2 (Build target(s)).
      1>ClCompile:
          C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\CL.exe /c /I..\.. /ZI /nologo /W3 /WX- /Od /Oy- /D _CRT_SECURE_NO_WARNINGS /D _MBCS /Gm /EHsc /RTC1 /MDd /GS /Gy /fp:precise /Zc:wchar_t /Zc:forScope /Fo"obj\x32\Debug\GLUI\\" /Fd"bin\Debug\GLUI.pdb" /Gd /TP /analyze- /errorReport:prompt /W1 ..\..\glui\algebra3.cpp ..\..\glui\arcball.cpp ..\..\glui\glui.cpp ..\..\glui\glui_add_controls.cpp ..\..\glui\glui_bitmaps.cpp ..\..\glui\glui_bitmap_img_data.cpp ..\..\glui\glui_button.cpp ..\..\glui\glui_checkbox.cpp ..\..\glui\glui_column.cpp ..\..\glui\glui_commandline.cpp ..\..\glui\glui_control.cpp ..\..\glui\glui_edittext.cpp ..\..\glui\glui_filebrowser.cpp ..\..\glui\glui_list.cpp ..\..\glui\glui_listbox.cpp ..\..\glui\glui_mouse_iaction.cpp ..\..\glui\glui_node.cpp ..\..\glui\glui_panel.cpp ..\..\glui\glui_radio.cpp ..\..\glui\glui_rollout.cpp ..\..\glui\glui_rotation.cpp ..\..\glui\glui_scrollbar.cpp ..\..\glui\glui_separator.cpp ..\..\glui\glui_spinner.cpp ..\..\glui\glui_statictext.cpp ..\..\glui\glui_string.cpp ..\..\glui\glui_textbox.cpp ..\..\glui\glui_translation.cpp ..\..\glui\glui_tree.cpp ..\..\glui\glui_treepanel.cpp ..\..\glui\glui_window.cpp ..\..\glui\quaternion.cpp
@@ -76,4 +76,4 @@
 
 Build succeeded.
 
-Time Elapsed 00:01:05.79
+Time Elapsed 00:00:51.61

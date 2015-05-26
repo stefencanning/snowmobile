@@ -28,108 +28,53 @@ public:
 			fd.density = 0.0f;
 			fd.friction = 0.6f;
 
-			shape.Set(b2Vec2(-20.0f, 0.0f), b2Vec2(20.0f, 0.0f));
+			shape.Set(b2Vec2(-20.0f, 10.0f), b2Vec2(0.0f, 10.0f));
 			ground->CreateFixture(&fd);
 
-			float32 hs[10] = {0.25f, 1.0f, 4.0f, 0.0f, 0.0f, -1.0f, -2.0f, -2.0f, -1.25f, 0.0f};
 
-			float32 x = 20.0f, y1 = 0.0f, dx = 5.0f;
+			float32 hs[10] = {10.25f, 1.0f,  1.0f, 1.25f, 10.0f};
 
-			for (int32 i = 0; i < 10; ++i)
+			float32 x = 00.0f, y1 = 10.0f, dx = 20.0f;
+
+			for (int32 i = 0; i < 5; ++i)
 			{
 				float32 y2 = hs[i];
 				shape.Set(b2Vec2(x, y1), b2Vec2(x + dx, y2));
 				ground->CreateFixture(&fd);
+				ground->SetAwake(true);
+				ground->SetActive(true);
 				y1 = y2;
 				x += dx;
 			}
-
-			for (int32 i = 0; i < 10; ++i)
-			{
-				float32 y2 = hs[i];
-				shape.Set(b2Vec2(x, y1), b2Vec2(x + dx, y2));
-				ground->CreateFixture(&fd);
-				y1 = y2;
-				x += dx;
-			}
-
-			shape.Set(b2Vec2(x, 0.0f), b2Vec2(x + 40.0f, 0.0f));
-			ground->CreateFixture(&fd);
-
-			x += 80.0f;
-			shape.Set(b2Vec2(x, 0.0f), b2Vec2(x + 40.0f, 0.0f));
-			ground->CreateFixture(&fd);
-
-			x += 40.0f;
-			shape.Set(b2Vec2(x, 0.0f), b2Vec2(x + 10.0f, 5.0f));
-			ground->CreateFixture(&fd);
-
-			x += 20.0f;
-			shape.Set(b2Vec2(x, 0.0f), b2Vec2(x + 40.0f, 0.0f));
-			ground->CreateFixture(&fd);
-
-			x += 40.0f;
-			shape.Set(b2Vec2(x, 0.0f), b2Vec2(x, 20.0f));
-			ground->CreateFixture(&fd);
-		}
-
-		// Teeter
-		{
-			b2BodyDef bd;
-			bd.position.Set(140.0f, 1.0f);
+			
 			bd.type = b2_dynamicBody;
-			b2Body* body = m_world->CreateBody(&bd);
-
-			b2PolygonShape box;
-			box.SetAsBox(10.0f, 0.25f);
-			body->CreateFixture(&box, 1.0f);
-
-			b2RevoluteJointDef jd;
-			jd.Initialize(ground, body, body->GetPosition());
-			jd.lowerAngle = -8.0f * b2_pi / 180.0f;
-			jd.upperAngle = 8.0f * b2_pi / 180.0f;
-			jd.enableLimit = true;
-			m_world->CreateJoint(&jd);
-
-			body->ApplyAngularImpulse(100.0f, true);
-		}
-
-		// Bridge
-		{
-			int32 N = 20;
-			b2PolygonShape shape;
-			shape.SetAsBox(1.0f, 0.125f);
-
-			b2FixtureDef fd;
-			fd.shape = &shape;
-			fd.density = 1.0f;
-			fd.friction = 0.6f;
-
-			b2RevoluteJointDef jd;
-
-			b2Body* prevBody = ground;
-			for (int32 i = 0; i < N; ++i)
+			b2PolygonShape snow;
+			b2Vec2 snowVertices[8];
+			snowVertices[0].Set(-0.025f*scale, 0.025f*scale);
+			snowVertices[1].Set(-0.025f*scale, -0.025f*scale);
+			snowVertices[2].Set(0.025f*scale, -0.025f*scale);
+			snowVertices[2].Set(0.025f*scale, 0.025f*scale);
+			snow.SetAsBox(0.025*scale,0.025*scale);
+			fd.shape = &snow;
+			fd.density = 5.0f;
+			fd.friction = 0.25f;
+			for(float i =0; i < 2*dx;i+= 0.05f*scale)
 			{
-				b2BodyDef bd;
-				bd.type = b2_dynamicBody;
-				bd.position.Set(161.0f + 2.0f * i, -0.125f);
-				b2Body* body = m_world->CreateBody(&bd);
-				body->CreateFixture(&fd);
-
-				b2Vec2 anchor(160.0f + 2.0f * i, -0.125f);
-				jd.Initialize(prevBody, body, anchor);
-				m_world->CreateJoint(&jd);
-
-				prevBody = body;
+				float y = 7.0f+(2*sin(10*i*(3.14f/180.0f)));
+				for( float j = 2; j < y; j+= 0.05f*scale)
+				{
+					bd.position.Set(i+(2*dx),j);
+					b2Body* snow = m_world->CreateBody(&bd);
+					snow->CreateFixture(&fd);
+					snow->SetAwake(true);
+					snow->SetActive(true);
+				}
 			}
 
-			b2Vec2 anchor(160.0f + 2.0f * N, -0.125f);
-			jd.Initialize(prevBody, ground, anchor);
-			m_world->CreateJoint(&jd);
+
 		}
 
-
-		// Car
+		// Snowmobile
 		{
 			b2PolygonShape chassis;
 			b2Vec2 vertices[8];
@@ -151,10 +96,10 @@ public:
 			b2Vec2 skisVertices[8];
 			skisVertices[0].Set(-0.7f*scale, -0.1f*scale);
 			skisVertices[1].Set(-0.2f*scale, -0.15f*scale);
-			skisVertices[2].Set(0.3f*scale, -0.15f*scale);
-			skisVertices[3].Set(0.7f*scale, -0.05f*scale);
-			skisVertices[4].Set(0.9f*scale, 0.05f*scale);
-			skisVertices[5].Set(0.9f*scale, 0.45f*scale);
+			skisVertices[2].Set(0.1f*scale, -0.15f*scale);
+			skisVertices[3].Set(0.1f*scale, -0.05f*scale);
+			skisVertices[4].Set(0.6f*scale, 0.05f*scale);
+			skisVertices[5].Set(1.2f*scale, 0.45f*scale);
 			skis.Set(skisVertices, 6);
 			
 
@@ -181,9 +126,9 @@ public:
 			weld.referenceAngle = 0;
 			m_world->CreateJoint(&weld);
 			
-			bd.position.Set(mobileX+(1.3f*scale), mobileY-(0.4f*scale)-(0.35f*scale));
+			bd.position.Set(mobileX+(1.0f*scale), mobileY-(0.4f*scale)-(0.35f*scale));
 			b2Body* skiBody = m_world->CreateBody(&bd);
-			skiBody->CreateFixture(&skis, 1.0f);
+			skiBody->CreateFixture(&skis, 0.20f);
 			
 			b2Vec2 axis(0.0f, 1.0f);
 			
@@ -207,7 +152,7 @@ public:
 
 			b2FixtureDef fd;
 			fd.shape = &circle;
-			fd.density = 10.0f;
+			fd.density = 1.0f;
 			fd.friction = 0.9f;
 			bd.position.Set(mobileX-(3.2f*scale), mobileY-(0.6f*scale));
 			gear = m_world->CreateBody(&bd);
@@ -223,7 +168,7 @@ public:
 			{
 				b2FixtureDef fd;
 				fd.shape = &teeth;
-				fd.density = 200.0f;
+				fd.density = 2.0f;
 				fd.friction = 2.0f;
 				float angle = (i*30)* 3.14159265f / 180.0f;
 				float x = centerX + (pointX-centerX)*cos(angle) - (pointY-centerY)*sin(angle);
@@ -261,7 +206,7 @@ public:
 			{
 				b2FixtureDef fd;
 				fd.shape = &teeth;
-				fd.density = 200.0f;
+				fd.density = 2.0f;
 				fd.friction = 2.0f;
 				float angle = (i*30)* 3.14159265f / 180.0f;
 				float x = centerX + (pointX-centerX)*cos(angle) - (pointY-centerY)*sin(angle);
@@ -333,11 +278,11 @@ public:
 
 				b2FixtureDef fd;
 				fd.shape = &shape;
-				fd.density = 20.0f;
+				fd.density = 10.0f;
 				fd.friction = 0.2f;
 				b2FixtureDef td;
 				td.shape = &teeth;
-				td.density = 20.0f;
+				td.density = 10.0f;
 				td.friction = 2.0f;
 
 				b2RevoluteJointDef jd;
@@ -362,6 +307,7 @@ public:
 				float centerY = mobileY-(0.6f*scale);
 				float pointX = mobileX-(3.2f*scale)-(circle.m_radius)-(teeth.m_radius*4);
 				float pointY =  mobileY-(0.6f*scale);
+				teeth.SetAsBox(0.06f*scale, 0.02f*scale);
 
 				b2Body* prevBody = firstBody;
 				float count = 46;
@@ -385,7 +331,7 @@ public:
 						weld.bodyA = body;
 						weld.bodyB = body2;
 						weld.localAnchorA = b2Vec2(0, 0);
-						weld.localAnchorB = b2Vec2(-teeth.m_radius, 0);
+						weld.localAnchorB = b2Vec2(0.02f*scale, 0);
 						weld.referenceAngle = 90 * 3.14159265f / 180.0f;
 						m_world->CreateJoint(&weld);
 					}
